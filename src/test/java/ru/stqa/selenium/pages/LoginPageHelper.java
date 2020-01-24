@@ -21,6 +21,9 @@ public class LoginPageHelper extends PageBase {
     @FindBy (id = "password")
     WebElement passwordField;
 
+    @FindBy (xpath = "//p[@class='error-message']")
+    WebElement loginError;
+
     public LoginPageHelper(WebDriver driver) {
         super(driver);
     }
@@ -96,5 +99,9 @@ public class LoginPageHelper extends PageBase {
     public boolean verifyIfLoginErrorIsCorrect() {
         return driver.findElement(By.xpath("//p[@class='error-message']"))
                 .getText().contains("There isn't an account for this email");
+    }
+
+    public String getLoginError(){
+        return loginError.getText();
     }
 }

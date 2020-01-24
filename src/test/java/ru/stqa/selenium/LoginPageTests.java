@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import ru.stqa.selenium.pages.BoardsPageHelper;
 import ru.stqa.selenium.pages.HomePageHelper;
 import ru.stqa.selenium.pages.LoginPageHelper;
+import util.DataProviders;
 
 public class LoginPageTests extends TestBase {
     HomePageHelper homePage;
@@ -45,14 +46,39 @@ public class LoginPageTests extends TestBase {
 
     }
 
-    @Test
-    public void loginIncorrectLoginNegative() {
+    @Test (dataProviderClass = DataProviders.class, dataProvider = "dataProviderFirst2")
+    public void loginIncorrectPassNegative1(String login, String password) {
 
         homePage.openLoginPage();
         loginPage.waitUntilPageIsLoaded();
-        loginPage.loginToTrello(LOGIN+"1", PASSWORD);
+        loginPage.loginToTrelloAsAtlassian(login, password);
+        loginPage.waitPasswordError();
+
+        Assert.assertTrue(loginPage.verifyIfPasswordErrorIsCorrect(), "Error password message is not correct");
+
+    }
+
+    @Test (dataProviderClass = DataProviders.class, dataProvider = "dataProviderFirst")
+    public void loginIncorrectLoginNegative1 (String login, String password,String message) {
+
+        homePage.openLoginPage();
+        loginPage.waitUntilPageIsLoaded();
+//        loginPage.loginToTrello(LOGIN+"1", PASSWORD);
+        loginPage.loginToTrello(login, password);
         loginPage.waitLoginError();
 
-        Assert.assertTrue(loginPage.verifyIfLoginErrorIsCorrect(), "Error login message is not correct");
+//        Assert.assertTrue(loginPage.verifyIfLoginErrorIsCorrect(), "Error login message is not correct");
+        Assert.assertEquals(message, loginPage.getLoginError());
+    }
+
+    @Test (dataProviderClass = DataProviders.class, dataProvider = "dataProviderSecond")
+    public void loginIncorrectLoginNegative2 (String login, String password) {
+
+        homePage.openLoginPage();
+        loginPage.waitUntilPageIsLoaded();
+        //loginPage.loginToTrelloNotAtlassian(LOGIN+"1",PASSWORD);
+        loginPage.loginToTrello(login,password);
+        loginPage.waitLoginError();
+        Assert.assertEquals("There isn't an account for this email", loginPage.getLoginError());
     }
 }

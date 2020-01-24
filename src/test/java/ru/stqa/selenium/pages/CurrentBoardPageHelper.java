@@ -56,6 +56,12 @@ public class CurrentBoardPageHelper extends PageBase {
     @FindBy (xpath = "//span[@class= 'js-add-another-card']")
     List<WebElement> addAnotherCardButtons;
 
+    @FindBy(xpath = "//button[@data-test-id = 'header-member-menu-button']")
+    WebElement initialsUpperRightIcon;
+
+    @FindBy(xpath = "//span[contains(text(),'Profile and Visibility')]")
+    WebElement profileAndVisibilityMenu;
+
     public CurrentBoardPageHelper(WebDriver driver) {
         super(driver);
     }
@@ -151,5 +157,11 @@ public class CurrentBoardPageHelper extends PageBase {
     public int getQuantityAddAnotherCardButtons() {
         waitUntilAllElementsAreVisible(addAnotherCardButtons, 10);
         return addAnotherCardButtons.size();
+    }
+
+    public void openUserProfile() {
+        initialsUpperRightIcon.click();
+        waitUntilElementIsClickable(profileAndVisibilityMenu,10);
+        profileAndVisibilityMenu.click();
     }
 }

@@ -8,6 +8,7 @@ import ru.stqa.selenium.pages.BoardsPageHelper;
 import ru.stqa.selenium.pages.CurrentBoardPageHelper;
 import ru.stqa.selenium.pages.HomePageHelper;
 import ru.stqa.selenium.pages.LoginPageHelper;
+import util.DataProviders;
 
 public class CurrentBoardPageTests extends TestBase {
     HomePageHelper homePage;
@@ -19,7 +20,7 @@ public class CurrentBoardPageTests extends TestBase {
     public void initTest() {
         homePage = PageFactory.initElements(driver, HomePageHelper.class);
         loginPage = PageFactory.initElements(driver, LoginPageHelper.class);
-        boardsPage = new BoardsPageHelper(driver);
+        boardsPage = PageFactory.initElements(driver, BoardsPageHelper.class);
         qa4AutoBoard = PageFactory.initElements(driver, CurrentBoardPageHelper.class);
         qa4AutoBoard.setName("QA4 Auto");
 
@@ -49,6 +50,20 @@ public class CurrentBoardPageTests extends TestBase {
                 nameList = qa4AutoBoard.stringWithRandomNumber(1000, nameList);
             }
         }
+        int quantityListAtFirst = qa4AutoBoard.getQuantityLists();
+        qa4AutoBoard.createNewList(nameList);
+        int quantityListAtTheEnd = qa4AutoBoard.getQuantityLists();
+
+        Assert.assertEquals(quantityListAtFirst+1, quantityListAtTheEnd);
+        Assert.assertEquals(qa4AutoBoard.getAddButtonName(), "Add another list");
+    }
+
+    @Test (dataProviderClass = DataProviders.class, dataProvider = "createListRandomName")
+    public void createNewListRandomName(String nameList) {
+
+        boardsPage.openBoard("QA4 Auto");
+        qa4AutoBoard.waitUntilPageIsLoaded();
+//        String nameList = "New List";
         int quantityListAtFirst = qa4AutoBoard.getQuantityLists();
         qa4AutoBoard.createNewList(nameList);
         int quantityListAtTheEnd = qa4AutoBoard.getQuantityLists();
