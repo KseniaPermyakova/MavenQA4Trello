@@ -22,7 +22,7 @@ public class LoginPageHelper extends PageBase {
     WebElement passwordField;
 
     @FindBy (xpath = "//p[@class='error-message']")
-    WebElement loginError;
+    WebElement loginError;   
 
     public LoginPageHelper(WebDriver driver) {
         super(driver);
