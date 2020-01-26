@@ -86,6 +86,20 @@ public class CurrentBoardPageTests extends TestBase {
         Assert.assertEquals(quantityAddAnotherButtonBeg+1, quantityAddAnotherButtonEnd);
     }
 
+    @Test (dataProviderClass = DataProviders.class, dataProvider = "createListRandomName")
+    public void addFirstCardInNewListRandomName(String nameList) {
+
+        boardsPage.openBoard("QA4 Auto");
+        qa4AutoBoard.waitUntilPageIsLoaded();
+        int quantityAddAnotherButtonBeg = qa4AutoBoard.getQuantityAddAnotherCardButtons();
+        qa4AutoBoard.createNewList(nameList);
+        qa4AutoBoard.clickLastAddCardButton();
+        qa4AutoBoard.addFirstCard();
+        int quantityAddAnotherButtonEnd = qa4AutoBoard.getQuantityAddAnotherCardButtons();
+
+        Assert.assertEquals(quantityAddAnotherButtonBeg+1, quantityAddAnotherButtonEnd);
+    }
+
     @Test
     public void deleteList() {
 
